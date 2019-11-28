@@ -7,21 +7,260 @@
   <body>
     <script>
 
-      $(document).ready(function(){
-        var $body = $('body');
-        $body.html('');
+  $(document).ready(function(){
+    var $body = $('body');
+    $body.html('');
 
-        var index = streams.home.length - 1;
-        while(index >= 0){
-          var tweet = streams.home[index];
-          var $tweet = $('<div></div>');
-          $tweet.text('@' + tweet.user + ': ' + tweet.message);
-          $tweet.appendTo($body);
-          index -= 1;
-        }
+//setting up the logo
+    var $heading = $('<h1></h1>');
+    $heading.appendTo($body)
+    $heading.html('<a id = logo href = "#">TWIDDLER.</a>');
+    $heading.css("position", "fixed");
+    $heading.css("width", "100%");
+    $heading.css("height", "60px");
+    $heading.css("font-family", "Courier New, sans-serif");
+    $heading.css("font-size", "50px");
+    $heading.css("letter-spacing", "10px")
+    $heading.css("margin", "0px auto 5px");
+    $heading.css("background-color", "white");
+    $("#logo").css("text-decoration", "none");
+    $("#logo").css("font-style", "italic");
+    $("#logo").css("color", "#64bcf9");
+    $("body > h1").css("text-align", "center");
 
-      });
+//setting up the three main sections
+    var $left = $("<div class='left main'></div>");
+    var $middle = $("<div class='middle main'></div>");
+    var $right = $("<div class='right main'></div>");
 
+    $left.appendTo($body);
+    $middle.appendTo($body);
+    $right.appendTo($body);
+    $(".main").css("display", "inline-block");
+    $(".main").css("margin-top", "60px");
+    $(".left").css("width", "20%");
+    $(".right").css("width", "25%");
+    $(".middle").css("width", "45%");
+    $(".left").css("margin-left", "3%");
+    $(".right").css("margin-right", "3%");
+    $left.css("position", "fixed");
+    $right.css("position", "fixed");
+    $middle.css("margin-left", "25%");
+    $middle.css("margin-right", "1%");
+
+
+
+//navigation for fun 
+    var $navigator = $("<div></div>");
+    $navigator.appendTo($left);
+    
+    $("<li class='nav'><a href='#'>Home</a></li>").appendTo($navigator);
+    $("<li class='nav'><a href='#'>Explore</a></li>").appendTo($navigator);
+    $("<li class='nav'><a href='#'>Notifications</a></li>").appendTo($navigator);
+    $("<li class='nav'><a href='#'>Messages</a></li>").appendTo($navigator);
+    $("<li class='nav'><a href='#'>Bookmarks</a></li>").appendTo($navigator);
+    $("<li class='nav'><a href='#'>Profile</a></li>").appendTo($navigator);
+    $(".nav").css("list-style-type", "none");
+    $(".nav").css("font-family", "Calibri");
+    $(".nav").css("font-size", "20px");
+    $(".nav").css("font-weight", "bold");
+    $(".nav a").css("text-decoration", "none");
+    $(".nav a").css("padding", "5px 10px");
+    $(".nav a").css("color", "black");
+    $(".nav").css("margin-bottom", "15px");
+    $(".nav a").css("border-radius", "20px");
+    $(".nav a").hover(function() {
+      $(this).css("background-color", "#64bcf9")
+    }, function() {
+      $(this).css("background-color",'white') 
+    });    
+
+//trends for fun 
+    var $trends = $("<div class='right-panel'></div>");
+    $trends.appendTo($right);
+    $trends.css("border-radius", "15px");
+    $trends.css("background-color", "#e4e4ea");
+
+
+    $("<h3>Trends For You</h3>").prependTo($trends);
+    $(".right-panel > h3").css("font-family", "Calibri");
+    $(".right-panel > h3").css("font-weight", "900");
+    $(".right-panel > h3").css("font-size", "25px");
+    $(".right-panel > h3").css("margin-top", "3px");
+    $(".right-panel > h3").css("margin-bottom", "0");
+    $(".right-panel > h3").css("padding-left", "10px");
+    $(".right-panel > h3").css("padding", "10px 0 10px 10px");
+
+    var $rightList = $("<ul></ul>");
+    $(`<li class='trends'><a href='#'>${streams.trends[0]}</a></li>`).appendTo($trends);
+    $(`<li class='trends'><a href='#'>${streams.trends[1]}</a></li>`).appendTo($trends);
+    $(`<li class='trends'><a href='#'>${streams.trends[2]}</a></li>`).appendTo($trends);
+    $(`<li class='trends'><a href='#'>${streams.trends[3]}</a></li>`).appendTo($trends);
+    $(`<li class='trends last'><a href='#'>${streams.trends[4]}</a></li>`).appendTo($trends);
+    
+    $(".trends").css("margin-right", "0px");
+    $(".trends").css("padding", "10px 0 10px 10px");
+    $(".trends").css("padding-bottom", "10px");
+    $(".trends").css("border-top", "1px solid #c5c5ca");
+    $(".trends").css("list-style-type", "none");
+    $(".trends").css("font-family", "Calibri");
+    $(".trends").css("font-size", "18px");
+    $(".trends").css("font-weight", "400");
+    $(".trends a").css("text-decoration", "none");
+    $(".trends a").css("color", "black");
+    $(".trends").hover(function() {
+      $(this).css("background-color", "#c5c5ca")
+    }, function() {
+      $(this).css("background-color",'#e4e4ea');
+      $(".trends.last").css("border-bottom-left-radius", "15px");
+      $(".trends.last").css("border-bottom-right-radius", "15px");
+    });        
+
+// neatly format date
+function getTheTime(date) {
+    var hour = date.getHours();
+    var amPm = "";
+    if (hour > 12) {
+      hour = hour - 12;
+      amPm = 'pm'
+    } else if (hour === 0) {
+        hour = 12;
+        amPm = 'am';
+    } else {
+        amPm = 'am';
+    }
+    if (hour < 10) {
+      hour = "0" + hour;
+    }
+    var minute = date.getMinutes();
+    if (minute < 10) {
+      minute = "0" + minute;
+    }
+
+    return hour + ":" + minute + amPm;
+}
+
+
+//generate tweets
+function generateTweets() {
+    var index = streams.home.length - 1;
+    while(index >= 0){
+// setting up elements of a tweet
+      var tweet = streams.home[index];
+      var picture = streams.pics
+      var $tweet = $(`<div class="tweets @${tweet.user}:"></div>`);
+      var $userLine = $('<div class="userLine"></div>');
+      var $picture = $(`<img class='picture' src="${picture[tweet.user]}" height='42px' width='42px'>`)
+      var $user = $("<a class='" + tweet.user + " userName " + "' id=" + index + " href='#'></a>");
+      $user.text('@' + tweet.user + ':');
+      var $date = $("<p class='date'></p>");
+      $date.text(getTheTime(tweet.created_at)) + ":" + getTheTime(tweet.created_at);
+      var $message = $("<p class='message'></p>");
+      $message.text(tweet.message);
+
+
+// setting up where the elements go
+      $tweet.appendTo($middle);
+      $userLine.appendTo($tweet);
+      $picture.appendTo($userLine);
+      $user.appendTo($userLine);
+      $date.appendTo($userLine);
+      $message.appendTo($tweet);
+
+      index -= 1;
+    }
+
+//controls the text format of the tweets
+    $(".userLine .date, .userLine .userName").css("display", "inline")
+    $(".userLine .date, .userLine .userName").css("margin-left", "12px")
+    $(".picture").css("border", "1px solid black");
+    $(".picture").css("border-radius", "6px");
+    $(".userName").css("font-weight", "bold");
+    $(".userName").css("font-family", "Calibri");
+    $(".userLine .userName").css("margin-bottom", "20px");
+    $(".message").css("color", "black")
+    $(".message").css("font-family", "Calibri")
+
+//controls the properties of the tweet boxes
+    var $tweetBox = $(".tweets");
+    $tweetBox.css("color", "blue");
+    $tweetBox.css("padding", '20px');
+    $tweetBox.css("padding-bottom", "0");
+    $tweetBox.css("border", '1px solid grey');
+    $tweetBox.css("background-color", "lavender")
+    $tweetBox.css("margin", "5px auto")
+    $tweetBox.css("border-radius", "5px")
+}
+
+generateTweets();
+
+// 'See New' button css
+    var $bottom = $("<div id='btn'></div>");
+    $bottom.appendTo($navigator);
+    $bottom.css("width", "100%");
+    $("<button id='seeNew'></button>").appendTo($bottom)
+    $("button#seeNew").text("See New Twiddles")
+    $("button#seeNew").click(function() {
+      $(".tweets").remove();
+      generateTweets();
+    })
+
+//     setInterval(function() {  attempt at automatically getting new tweets
+//         $(".tweets").remove();
+//         generateTweets();
+//     }, 1500);
+
+// "See All" button
+    $("<button id='seeAll'></button>").appendTo($bottom)
+    $("button#seeAll").text("See All Twiddles")
+    $("button#seeAll").css("border", "none");
+    $("button#seeAll").css("background-color", "white");
+    $(`button#seeAll`).click(function() {
+        $('*').show();
+    });     
+    $("button").css("border-top", "2px solid #64bcf9");
+    $("button").css("border-bottom", "2px solid #64bcf9");
+    $("button").css("border-left", "none");
+    $("button").css("border-right", "none");
+    $("button").css("background-color", "white");
+    $("button").css("text-align", "left");
+    $("button").css("padding", "4px")
+    $("button").css("font-family", "Calibri");
+    $("button").css("font-size", "19px");
+    $("button").css("font-weight", "bold");
+    $("button").css("text-decoration", "none");
+    $("button").css("padding", "5px 10px");
+    $("button").css("color", "black");
+    $("button").css("margin-bottom", "5px");
+    $("button").css("border-radius", "10px");
+    $("button").hover(function() {
+      $(this).css("background-color", "#64bcf9");
+    }, function() {
+      $(this).css("background-color",'white');
+    });    
+    $("button").mousedown(function() {
+      $(this).css("box-shadow", "2px 3px #665");
+      $(this).css("outline", "none");      
+    });
+    $("button").mouseup(function() {
+      $(this).css("box-shadow", "none");
+      $(this).css("outline", "none");
+    });    
+
+// Select User to filter tweets
+// I used setInterval because using the function without it would 
+// make it stop filtering after the first tweet regeneration. I figured 
+// that setInterval would refresh the function after each half second 
+// so that I could use the button even after regeneration of tweets.
+    setInterval(function() {
+      $(`.userName`).click(function() {
+        var $specUser = $(this).text();
+        console.log($specUser);
+        $('.tweets').hide();
+        $(`[class~="${$specUser}"`).show();
+      })
+    }, 500);
+ });
     </script>
   </body>
 </html>
